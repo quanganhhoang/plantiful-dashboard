@@ -5,4 +5,26 @@ export const DashboardContainer = styled.div`
     flex-direction: column;
 `;
 
-export const 
+export const TotalNumberOrderContainer = styled.div`
+    display: grid;
+`;
+
+export const CompleteOrderContainer = styled.div`
+    display: grid;
+`;
+
+export const IncompleteOrderContainer = styled.div`
+    display: grid;
+`;
+
+export const GrossRevenueContainer = styled.div`
+    display: grid;
+`;
+
+export const CustomerLogisticsContainer = styled.div`
+    display: grid;
+`;
+
+export const SaleContainer = styled.div`
+    display: grid;
+`;

@@ -1,15 +1,46 @@
-import React from 'react'
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { 
+    InventoryPageContainer,
+    UpdateInventoryButton
+} from './inventory.styles';
 
-import { InventoryPageContainer } from './inventory.styles'
+import CustomTable from '../../components/custom-table/custom-table.styles';
 
-const InventoryPage = () => {
+const InventoryPage = ( { history }) => {
+    const tableData = [
+        {
+            "Country Name": "Afghanistan",
+            Capital: "Kabul",
+            Currency: "Afghani"
+        },
+        {
+            "Country Name": "Albania",
+            Capital: "Tirane",
+            Currency: "Lek"
+        },
+        {
+            "Country Name": "Algeria",
+            Capital: "Algiers",
+            Currency: "Dinar"
+        }
+    ];
+
     return (
         <div>
             <InventoryPageContainer>
-                Inventory
+                <UpdateInventoryButton
+                    inverted
+                    onClick={() => {
+                        history.push('/inventory/update')
+                    }}
+                >
+                    Update Inventory
+                </UpdateInventoryButton>
+                <CustomTable data={tableData} />
             </InventoryPageContainer>
         </div>
     )
 }
 
-export default InventoryPage;
+export default withRouter(InventoryPage);
