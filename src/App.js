@@ -1,11 +1,46 @@
-import React from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import './App.css';
-import FileUpload from './components/FileUpload';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { GlobalStyle } from './global.styles';
+import Header from './components/header/header.component';
+import Spinner from './components/spinner/spinner.component';
+import ErrorBoundary from './components/error-boundary/error-boundary.component';
+
+const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
+const DashboardPage = lazy(() => import('./pages/dashboard/dashboard.component'));
+const InventoryPage = lazy(() => import('./pages/inventory/inventory.component'));
+
 
 const App = () => (
-  <div className="App">
-    <FileUpload></FileUpload>
-  </div>
+    <div>
+        <GlobalStyle />
+        <Header />
+        <Switch>
+            <ErrorBoundary>
+                <Suspense fallback={<Spinner />}>
+                    <Route exact path='/' component={HomePage} />
+                    <Route exact path='/dashboard' component={DashboardPage} />
+                    <Route exact path='/inventory' component={InventoryPage} />
+                </Suspense>
+            </ErrorBoundary>
+        </Switch>
+    </div>
+
 );
 
-export default App;
+// createStructuredSelector passes the redux state object to all selectors
+const mapStateToProps = createStructuredSelector({
+    // currentUser: selectCurrentUser,
+});
+
+const mapDispatchToProps = dispatch => ({
+    // checkUserSession: () => dispatch(checkUserSession())
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
