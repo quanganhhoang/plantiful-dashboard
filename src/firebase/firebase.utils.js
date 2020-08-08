@@ -20,6 +20,40 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const storage = firebase.storage();
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if (!userAuth) return;
+    // queryReference vs. querySnapshot
+    // documentReference vs collectionReference
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
+
+    const snapShot = await userRef.get();
+
+    if (!snapShot.exists) { // if user doesn't already exist
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            });
+        } catch (error) {
+            console.log('error creating user', error.message);
+        }
+    }
+
+    return userRef;
+};
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            unsubscribe();
+            resolve(userAuth);
+        }, reject);
+    });
+};
 
 export const addCollectionAndDocuments = async (
     collectionKey,
@@ -74,13 +108,32 @@ export const addOrderRequest = async (userCredentials, cartItems, total) => {
     return await batch.commit();
 };
 
+export const viewAllOrders = async () => {
+    const collectionRef = firestore.collection('requests');
+    let orders = [];
+    try {
+        const snapshot = await collectionRef.where('isCompleted', '==', false).get();
+        console.log('All orders:', snapshot);
+        if (snapshot.empty) {
+            return;
+        }
+    
+        snapshot.forEach(doc => {
+            orders.push(doc.data());
+        })
+    } catch (err) {
+        console.log(err);
+    }
 
-export const viewRequests = async () => {
+    return orders;
+}
+
+export const viewCompletedOrders = async () => {
     const collectionRef = firestore.collection('requests')
 
     try {
         const snapshot = await collectionRef.where('isCompleted', '==', false).get();
-        console.log('snapshot', snapshot);
+        console.log('Complete orders:', snapshot);
         if (snapshot.empty) {
             console.log('All requests are completed');
             return;
@@ -92,22 +145,6 @@ export const viewRequests = async () => {
     } catch (err) {
         console.log(err);
     }
-}
-
-export const getImagesFromFirestore = async (plantName) => {
-    const listRef = storage.ref('plant-images').child(plantName);
-    let images = [];
-    
-    const res = await listRef.listAll();
-    for (let item of res.items) {
-        const url = await item.getDownloadURL();
-        images.push({
-            src: url,
-            altText: 'image'
-        });
-    }
-    
-    return images;
 }
 
 // sign in with Google

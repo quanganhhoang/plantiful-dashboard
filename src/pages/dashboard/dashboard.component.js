@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
     DashboardContainer,
     TotalNumberOrderContainer,
@@ -8,12 +9,22 @@ import {
     SaleContainer,
 } from './dashboard.styles';
 
-const Dashboard = () => {
+import {
+    fetchAllOrders
+} from '../../redux/order/order.actions'
+
+import { selectAllOrders } from '../../redux/order/order.selectors';
+
+const Dashboard = ( { viewAllOrders, orderData }) => {
+    useEffect(() => {
+        viewAllOrders();
+    }, [viewAllOrders]);
+
     return (
         <div>
             <DashboardContainer>
                 <TotalNumberOrderContainer>
-                    TotalNumberOrderContainer
+                    TotalNumberOrderContainer: {orderData.length}
                 </TotalNumberOrderContainer>
 
                 <CompleteOrderContainer>
@@ -36,4 +47,16 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        orderData: selectAllOrders(state)
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        viewAllOrders: () => dispatch(fetchAllOrders())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
