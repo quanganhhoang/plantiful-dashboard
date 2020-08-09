@@ -6,7 +6,7 @@ import {
     CompleteOrderContainer,
     IncompleteOrderContainer,
     CustomerLogisticsContainer,
-    SaleContainer,
+    TotalRevenueContainer,
 } from './dashboard.styles';
 
 import {
@@ -65,31 +65,29 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
     console.log("TOTAL SALES:", totalSales);
 
 
-
     return (
         <div>
             <DashboardContainer>
                 <TotalNumberOrderContainer>
-                    TotalNumberOrderContainer: {orderData.length}
+                    All orders: {orderData.length}
                 </TotalNumberOrderContainer>
 
                 <CompleteOrderContainer>
-                    CompleteOrderContainer: {completedOrders.length}
+                    Complete Orders: {completedOrders.length}
                 </CompleteOrderContainer>
 
                 <IncompleteOrderContainer>
-                    IncompleteOrderContainer: {incompleteOrders.length}
+                    Incomplete Orders: {incompleteOrders.length}
                     {orderTable.length > 0 ? <DashboardTable data={orderTable} /> : ''}
-                    
                 </IncompleteOrderContainer>
 
                 <CustomerLogisticsContainer>
-                    CustomerLogisticsContainer:
+                    Total number of customers: {numCustomers}
                 </CustomerLogisticsContainer>
 
-                <SaleContainer>
-                    SaleContainer
-                </SaleContainer>
+                <TotalRevenueContainer>
+                    Total Revenue: 
+                </TotalRevenueContainer>
             </DashboardContainer>
         </div>
     )

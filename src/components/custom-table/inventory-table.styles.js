@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledTable = styled.table`
+    width: 75%;
     caption-side: top;
     border: none;
     border-collapse: collapse;
@@ -49,8 +50,16 @@ const StyledTable = styled.table`
     }
 `;
 
+const titleOrder = {
+    "id": 0,
+    "name": 1,
+    "quantity": 2,
+    "price": 3
+}
+
 const TableMarkup = ({ titles, data, exclude }) => {
     const displayTitles = exclude ? titles.filter(title => !exclude.includes(title)) : titles;
+    displayTitles.sort((a, b) => titleOrder[a] - titleOrder[b]);
 
     return (
         <StyledTable>

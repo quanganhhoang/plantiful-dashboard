@@ -19,6 +19,17 @@ export function* fetchLogistics() {
         const completedOrders = allOrders.filter(order => order.isCompleted);
         const inCompletedOrders = allOrders.filter(order => !order.isCompleted);
 
+        let customers = [];
+        allOrders.forEach((order) => {
+            const index = customers.findIndex(x => x.name === order.name)
+            if (index <= -1) {
+                customers.push({
+                    name: order.name,
+                    email: order.email
+                })
+            }
+        })
+
         yield put(fetchAllOrdersSuccess(allOrders));
         yield put(fetchCompletedOrdersSuccess(completedOrders));
         yield put(fetchIncompleteOrdersSuccess(inCompletedOrders));

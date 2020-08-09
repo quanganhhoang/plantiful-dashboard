@@ -25,6 +25,6 @@ export const CustomerLogisticsContainer = styled.div`
     display: grid;
 `;
 
-export const SaleContainer = styled.div`
+export const TotalRevenueContainer = styled.div`
     display: grid;
 `;

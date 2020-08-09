@@ -66,7 +66,6 @@ const TableMarkup = ({ titles, data }) => {
         setVisible(false);
     };
 
-
     return (
         <StyledTable>
             <caption>Plant Inventory</caption>
@@ -95,7 +94,9 @@ const TableMarkup = ({ titles, data }) => {
                                 </Button>
                                 <Modal
                                     title="Order Information"
+                                    width="600"
                                     visible={visible}
+                                    okText="Complete"
                                     onOk={handleOk}
                                     onCancel={handleCancel}
                                 >
@@ -103,7 +104,7 @@ const TableMarkup = ({ titles, data }) => {
                                     <p>Email: {item["Email"]}</p>
                                     <p>Phone: {item["Phone Number"]}</p>
                                     {item["Cart Items"].length > 0 ? 
-                                        <OrderTable 
+                                        <OrderTable
                                             data={item["Cart Items"]}
                                             excludeColumns="imageUrl"    
                                         /> 
