@@ -49,34 +49,38 @@ const StyledTable = styled.table`
     }
 `;
 
-const TableMarkup = ({ titles, data }) => (
-    <StyledTable>
-        <caption>Plant Inventory</caption>
-        <colgroup>
-            <col />
-            <col />
-            <col />
-        </colgroup>
-        <thead>
-            <tr>
-            {titles.map((title, index) => (
-                <th key={index}>{title}</th>
-            ))}
-            </tr>
-        </thead>
-        <tbody>
-            {data.map((item, index) => (
-            <tr key={index}>
-                {titles.map((title, index) => (
-                <td key={index}>{item[title]}</td>
+const TableMarkup = ({ titles, data, exclude }) => {
+    const displayTitles = exclude ? titles.filter(title => !exclude.includes(title)) : titles;
+
+    return (
+        <StyledTable>
+            <caption>Plant Inventory</caption>
+            <colgroup>
+                <col />
+                <col />
+                <col />
+            </colgroup>
+            <thead>
+                <tr>
+                    {displayTitles.map((title, index) => (
+                        <th key={index}>{title}</th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {data.map((item, index) => (
+                <tr key={index}>
+                    {displayTitles.map((title, index) => (
+                        <td key={index}>{item[title]}</td>
+                    ))}
+                </tr>
                 ))}
-            </tr>
-            ))}
-        </tbody>
-    </StyledTable>
-);
+            </tbody>
+        </StyledTable>
+    );
+};
 
 
-export default ({ data }) => (
-    <TableMarkup titles={Object.keys(data[0])} data={data} />
+export default ({ data, excludeColumns }) => (
+    <TableMarkup titles={Object.keys(data[0])} data={data} exclude={excludeColumns}/>
 );

@@ -5,7 +5,7 @@ import {
     UpdateInventoryButton
 } from './inventory.styles';
 
-import CustomTable from '../../components/custom-table/custom-table.styles';
+import InventoryTable from '../../components/custom-table/inventory-table.styles';
 
 const InventoryPage = ( { history }) => {
     const tableData = [
@@ -37,7 +37,7 @@ const InventoryPage = ( { history }) => {
                 >
                     Update Inventory
                 </UpdateInventoryButton>
-                <CustomTable data={tableData} />
+                <InventoryTable data={tableData} />
             </InventoryPageContainer>
         </div>
     )

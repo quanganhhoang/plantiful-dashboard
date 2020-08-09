@@ -10,15 +10,61 @@ import {
 } from './dashboard.styles';
 
 import {
-    fetchAllOrders
+    fetchLogistics
 } from '../../redux/order/order.actions'
 
-import { selectAllOrders } from '../../redux/order/order.selectors';
+import { 
+    selectAllOrders,
+    selectCompletedOrders,
+    selectIncompleteOrders,
+    selectNumCustomers,
+    selectTotalRevenue,
+    selectTotalSales
+ } from '../../redux/order/order.selectors';
 
-const Dashboard = ( { viewAllOrders, orderData }) => {
+import DashboardTable from '../../components/custom-table/dashboard-table.styles';
+
+const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrders, numCustomers, totalRevenue, totalSales }) => {
     useEffect(() => {
         viewAllOrders();
     }, [viewAllOrders]);
+
+    const tableData = [
+        {
+            "Country Name": "Afghanistan",
+            Capital: "Kabul",
+            Currency: "Afghani"
+        },
+        {
+            "Country Name": "Albania",
+            Capital: "Tirane",
+            Currency: "Lek"
+        },
+        {
+            "Country Name": "Algeria",
+            Capital: "Algiers",
+            Currency: "Dinar"
+        }
+    ];
+    const orderTable = [];
+    incompleteOrders.forEach(order => {
+        orderTable.push({
+            Name: order.name,
+            Email: order.email,
+            "Phone Number": order.phoneNumber,
+            "Created at": order.creationDate,
+            "Cart Items": order.cartItems
+        })
+    })
+    console.log("ORDER TABLE: ", orderTable);
+    console.log("ALL ORDERS:", orderData)
+    console.log("COMPLETE ORDERS:", completedOrders);
+    console.log("INCOMPLETE ORDERS:", incompleteOrders);
+    console.log("NUM CUSTOMERS:", numCustomers);
+    console.log("TOTAL REVENUE:", totalRevenue);
+    console.log("TOTAL SALES:", totalSales);
+
+
 
     return (
         <div>
@@ -28,15 +74,17 @@ const Dashboard = ( { viewAllOrders, orderData }) => {
                 </TotalNumberOrderContainer>
 
                 <CompleteOrderContainer>
-                    CompleteOrderContainer
+                    CompleteOrderContainer: {completedOrders.length}
                 </CompleteOrderContainer>
 
                 <IncompleteOrderContainer>
-                    IncompleteOrderContainer
+                    IncompleteOrderContainer: {incompleteOrders.length}
+                    {orderTable.length > 0 ? <DashboardTable data={orderTable} /> : ''}
+                    
                 </IncompleteOrderContainer>
 
                 <CustomerLogisticsContainer>
-                    CustomerLogisticsContainer
+                    CustomerLogisticsContainer:
                 </CustomerLogisticsContainer>
 
                 <SaleContainer>
@@ -49,13 +97,18 @@ const Dashboard = ( { viewAllOrders, orderData }) => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        orderData: selectAllOrders(state)
+        orderData: selectAllOrders(state),
+        completedOrders: selectCompletedOrders(state),
+        incompleteOrders: selectIncompleteOrders(state),
+        numCustomers: selectNumCustomers(state),
+        totalRevenue: selectTotalRevenue(state),
+        totalSales: selectTotalSales(state)
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        viewAllOrders: () => dispatch(fetchAllOrders())
+        viewAllOrders: () => dispatch(fetchLogistics())
     }
 }
 

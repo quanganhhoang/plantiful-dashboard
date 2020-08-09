@@ -25,7 +25,7 @@ export const Header = ({ currentUser, signOutStart }) => (
                         SIGN OUT
                     </OptionLink>
                 ) : (
-                    <OptionLink to='/signin'>Sign in</OptionLink>
+                    <OptionLink to='/'>Sign in</OptionLink>
                 )}
         </OptionsContainer>
     </HeaderContainer>

@@ -5,14 +5,14 @@ const INITIAL_STATE = {
     completedOrders: [],
     incompleteOrders: [],
     numCustomers: 0,
-    grossRevenue: 0,
-    numSales: 0,
+    totalRevenue: 0,
+    totalSales: 0,
     loading: false
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case OrderActionTypes.FETCH_ALL_ORDERS:
+        case OrderActionTypes.FETCH_LOGISTICS:
             return {
                 ...state,
                 loading: true
@@ -21,6 +21,18 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 allOrders: action.payload,
+                loading: false
+            }
+        case OrderActionTypes.FETCH_COMPLETE_ORDERS_SUCCESS:
+            return {
+                ...state,
+                completedOrders: action.payload,
+                loading: false
+            }
+        case OrderActionTypes.FETCH_INCOMPLETE_ORDERS_SUCCESS:
+            return {
+                ...state,
+                incompleteOrders: action.payload,
                 loading: false
             }
         default:

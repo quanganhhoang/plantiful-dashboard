@@ -4,29 +4,39 @@ import OrderActionTypes from './order.types';
 
 import {
     fetchAllOrdersSuccess,
-    fetchAllOrdersFail
+    fetchAllOrdersFail,
+    fetchCompletedOrdersSuccess,
+    fetchIncompleteOrdersSuccess
 } from './order.actions';
 
 import {
     viewAllOrders
 } from '../../firebase/firebase.utils';
 
-export function* fetchAllOrders() {
+export function* fetchLogistics() {
     try {
         const allOrders = yield viewAllOrders();
-        
+        const completedOrders = allOrders.filter(order => order.isCompleted);
+        const inCompletedOrders = allOrders.filter(order => !order.isCompleted);
+
         yield put(fetchAllOrdersSuccess(allOrders));
+        yield put(fetchCompletedOrdersSuccess(completedOrders));
+        yield put(fetchIncompleteOrdersSuccess(inCompletedOrders));
+        
     } catch (error) {
         yield put(fetchAllOrdersFail(error));
     }
 }
 
-export function* onFetchAllOrders() {
-    yield takeLatest(OrderActionTypes.FETCH_ALL_ORDERS, fetchAllOrders);
+export function* onFetchLogistics() {
+    yield takeLatest(
+        OrderActionTypes.FETCH_LOGISTICS, 
+        fetchLogistics
+    );
 }
 
 export default function* orderSagas() {
     yield all([
-        call(onFetchAllOrders),
+        call(onFetchLogistics),
     ]);
 }
