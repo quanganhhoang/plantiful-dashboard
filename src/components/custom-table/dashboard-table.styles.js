@@ -11,7 +11,7 @@ const StyledTable = styled.table`
     ${'' /* border-spacing: 5px 10px; */}
 
     caption-side: bottom;
-    ${'' /* empty-cell: show | hide; */}
+    empty-cell: show | hide;
     /* empty-cell is a property of table or the cells themselves */
 
     /* vertical-align: baseline | sub | super | text-top | 
@@ -52,18 +52,32 @@ const StyledTable = styled.table`
 `;
 
 const TableMarkup = ({ titles, data }) => {
-    const [visible, setVisible] = useState(false);
+    const modalVisibility = {};
+    Object.keys(data).forEach(k => {
+        modalVisibility[k] = false;
+    })
+    
+    const [visible, setVisible] = useState(modalVisibility);
 
-    const showModal = () => {
-        setVisible(true);
+    const showModal = (index) => {
+        setVisible({
+            ...visible,
+            [index]: true
+        })
     }
 
-    const handleOk = e => {
-        setVisible(false);
-      };
+    const handleOk = (index) => {
+        setVisible({
+            ...visible,
+            [index]: false
+        })
+    };
     
-    const handleCancel = e => {
-        setVisible(false);
+    const handleCancel = (index) => {
+        setVisible({
+            ...visible,
+            [index]: false
+        })
     };
 
     return (
@@ -88,17 +102,20 @@ const TableMarkup = ({ titles, data }) => {
                                 <td key={index}>{item[title]}</td>
                             ))}
                             <td>
-                                <Button onClick={showModal}>
+                                <Button 
+                                    onClick={() => showModal(index)}>
                                     View
                                 </Button>
                                 <Modal
                                     title="Order Information"
                                     width="600"
-                                    visible={visible}
+                                    visible={visible[index]}
                                     okText="Complete"
-                                    onOk={handleOk}
-                                    onCancel={handleCancel}
+                                    onOk={() => handleOk(index)}
+                                    onCancel={() => handleCancel(index)}
+                                    closeable
                                 >
+                                    <p>Order ID: {item["Order ID"]}</p>
                                     <p>Name: {item["Name"]}</p>
                                     <p>Email: {item["Email"]}</p>
                                     <p>Phone: {item["Phone Number"]}</p>
@@ -123,7 +140,6 @@ const TableMarkup = ({ titles, data }) => {
                             </td>
                         </tr>
                 )})}
-                
             </tbody>
         </StyledTable>
     )

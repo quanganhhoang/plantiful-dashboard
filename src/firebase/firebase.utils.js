@@ -113,13 +113,15 @@ export const viewAllOrders = async () => {
     let orders = [];
     try {
         const snapshot = await collectionRef.where('isCompleted', '==', false).get();
-        console.log('All orders:', snapshot);
         if (snapshot.empty) {
             return;
         }
     
         snapshot.forEach(doc => {
-            orders.push(doc.data());
+            orders.push({
+                id: doc.id,
+                ...doc.data()
+            });
         })
     } catch (err) {
         console.log(err);

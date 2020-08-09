@@ -32,6 +32,7 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
     const orderTable = [];
     incompleteOrders.forEach(order => {
         orderTable.push({
+            "Order ID": order.id,
             Name: order.name,
             Email: order.email,
             "Phone Number": order.phoneNumber,

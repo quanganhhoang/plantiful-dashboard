@@ -7,6 +7,11 @@ import {
     UploadTitle,
 } from './file-upload.styles';
 
+import {
+    updateImagesToUpload
+} from '../../redux/inventory/inventory.actions';
+
+
 const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -16,7 +21,7 @@ const getBase64 = (file) => {
     });
 }
 
-const FileUpload = () => {
+const FileUpload = ( { updateImagesToUpload } ) => {
     const INITIAL_STATE = {
         previewVisible: false,
         previewImage: '',
@@ -51,6 +56,8 @@ const FileUpload = () => {
             ...preview,
             fileList
         });
+
+        updateImagesToUpload(fileList);
     }
 
     const { previewVisible, previewImage, fileList, previewTitle } = preview;
@@ -88,5 +95,11 @@ const FileUpload = () => {
     );
 }
 
-export default FileUpload;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateImagesToUpload: (fileList) => dispatch(updateImagesToUpload(fileList))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(FileUpload);
 

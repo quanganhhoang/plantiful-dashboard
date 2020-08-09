@@ -13,8 +13,14 @@ import FormInput from '../../components/form-input/form-input.component';
 import FileUpload from '../../components/file-upload/file-upload.component';
 
 import { addProduct } from '../../redux/inventory/inventory.actions'
+import {
+    selectProductImages
+} from '../../redux/inventory/inventory.selectors';
 
-const UpdateInventory = ( { addProduct }) => {
+import { storage } from '../../firebase/firebase.utils';
+
+
+const UpdateInventory = ( { productImages, addProduct }) => {
     const INITIAL_STATE = {
         plantName: '',
         light: '',
@@ -46,8 +52,23 @@ const UpdateInventory = ( { addProduct }) => {
             isToxicToPets: isToxicToPets,
             other: other
         }
-        addProduct(product);
+        uploadImages(productImages);
         setIsUploading(false);
+    }
+
+    const uploadImages = async (images) => {
+        const storageRef = storage.ref();
+        images.forEach(async image => {
+            console.log("image", image);
+            const imageFolder = plantName.toLowerCase().split(' ').join('');
+            const imageRef = storageRef.child(`plant-images/${imageFolder}/${image.name}`)
+            const imageFile = new File([image], image.name, {
+                type: image.type
+            });
+            
+            const snapshot = await imageRef.put(imageFile);
+            console.log("snapshot", snapshot);
+        })
     }
 
     const {
@@ -131,10 +152,16 @@ const UpdateInventory = ( { addProduct }) => {
     )
 }
 
+const mapStateToProps = (state) => {
+    return {
+        productImages: selectProductImages(state)
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         addProduct: (product) => dispatch(addProduct(product))
     }
 }
 
-export default connect(null, mapDispatchToProps)(UpdateInventory);
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateInventory);
