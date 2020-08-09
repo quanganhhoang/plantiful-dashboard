@@ -24,3 +24,8 @@ export const fetchIncompleteOrdersSuccess = ( inCompletedOrders ) => ({
     payload: inCompletedOrders
 })
 
+export const fetchAllCustomersSuccess = ( customers ) => ({
+    type: OrderActionTypes.FETCH_ALL_CUSTOMERS_SUCCESS,
+    payload: customers
+})
+

@@ -17,9 +17,9 @@ export const selectIncompleteOrders = createSelector(
     order => order.incompleteOrders
 );
 
-export const selectNumCustomers = createSelector(
+export const selectCustomers = createSelector(
     [selectOrder],
-    order => order.numCustomers
+    order => order.customers
 );
 
 export const selectTotalRevenue = createSelector(

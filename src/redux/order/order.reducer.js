@@ -4,7 +4,7 @@ const INITIAL_STATE = {
     allOrders: [],
     completedOrders: [],
     incompleteOrders: [],
-    numCustomers: 0,
+    customers: 0,
     totalRevenue: 0,
     totalSales: 0,
     loading: false
@@ -33,6 +33,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 incompleteOrders: action.payload,
+                loading: false
+            }
+        case OrderActionTypes.FETCH_ALL_CUSTOMERS_SUCCESS:
+            return {
+                ...state,
+                customers: action.payload,
                 loading: false
             }
         default:

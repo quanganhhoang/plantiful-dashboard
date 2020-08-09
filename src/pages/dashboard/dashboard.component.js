@@ -17,7 +17,7 @@ import {
     selectAllOrders,
     selectCompletedOrders,
     selectIncompleteOrders,
-    selectNumCustomers,
+    selectCustomers,
     selectTotalRevenue,
     selectTotalSales
  } from '../../redux/order/order.selectors';
@@ -83,7 +83,7 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
                 </IncompleteOrderContainer>
 
                 <CustomerLogisticsContainer>
-                    Total number of customers: {numCustomers}
+                    Total number of customers: {numCustomers.length}
                 </CustomerLogisticsContainer>
 
                 <TotalRevenueContainer>
@@ -99,7 +99,7 @@ const mapStateToProps = (state, ownProps) => {
         orderData: selectAllOrders(state),
         completedOrders: selectCompletedOrders(state),
         incompleteOrders: selectIncompleteOrders(state),
-        numCustomers: selectNumCustomers(state),
+        numCustomers: selectCustomers(state),
         totalRevenue: selectTotalRevenue(state),
         totalSales: selectTotalSales(state)
     }

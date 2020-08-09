@@ -6,7 +6,8 @@ import {
     fetchAllOrdersSuccess,
     fetchAllOrdersFail,
     fetchCompletedOrdersSuccess,
-    fetchIncompleteOrdersSuccess
+    fetchIncompleteOrdersSuccess,
+    fetchAllCustomersSuccess
 } from './order.actions';
 
 import {
@@ -34,6 +35,7 @@ export function* fetchLogistics() {
         yield put(fetchAllOrdersSuccess(allOrders));
         yield put(fetchCompletedOrdersSuccess(completedOrders));
         yield put(fetchIncompleteOrdersSuccess(inCompletedOrders));
+        yield put(fetchAllCustomersSuccess(customers));
         
     } catch (error) {
         yield put(fetchAllOrdersFail(error));
