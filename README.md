@@ -6,20 +6,11 @@ Technology stack: React, Firebase.
 
 ## TODO
 
-- Header
-  - Plantiful Manager
-  - Dashboard
-  - Inventory
-  - Sign in/out
-  
-- Dashboard page: view and process outstanding orders
-  - Total number of orders
-  - Complete orders
-  - Incomplete orders
-  - Gross Revenue
-  - Number of customers
-  - Number of plants sold
-  
+- Add new product
+  - Add images to firebase storage
+  - Add plant information w/ picture links from above to current collection
+
+
 - Outstanding Order Requests
   - Complete or Cancelled
   - If complete, update logistics
