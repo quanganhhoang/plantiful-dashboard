@@ -7,7 +7,8 @@ import {
     fetchAllOrdersFail,
     fetchCompletedOrdersSuccess,
     fetchIncompleteOrdersSuccess,
-    fetchAllCustomersSuccess
+    fetchAllCustomersSuccess,
+    fetchTotalRevenueSuccess
 } from './order.actions';
 
 import {
@@ -21,14 +22,17 @@ export function* fetchLogistics() {
         const completedOrders = allOrders.filter(order => order.isCompleted);
         const inCompletedOrders = allOrders.filter(order => !order.isCompleted);
 
-        let customers = [];
+        let customers = [], totalRevenue = 0;
         allOrders.forEach((order) => {
-            const index = customers.findIndex(x => x.name === order.name)
+            // calc total revnue
+            totalRevenue += order.total;
+            // find total number of unique customers
+            const index = customers.findIndex(x => x.name === order.name);
             if (index <= -1) {
                 customers.push({
                     name: order.name,
                     email: order.email
-                })
+                });
             }
         })
 
@@ -36,6 +40,7 @@ export function* fetchLogistics() {
         yield put(fetchCompletedOrdersSuccess(completedOrders));
         yield put(fetchIncompleteOrdersSuccess(inCompletedOrders));
         yield put(fetchAllCustomersSuccess(customers));
+        yield put(fetchTotalRevenueSuccess(totalRevenue));
         
     } catch (error) {
         yield put(fetchAllOrdersFail(error));

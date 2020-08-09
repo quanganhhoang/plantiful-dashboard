@@ -87,7 +87,7 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
                 </CustomerLogisticsContainer>
 
                 <TotalRevenueContainer>
-                    Total Revenue: 
+                    Total Revenue: {totalRevenue}
                 </TotalRevenueContainer>
             </DashboardContainer>
         </div>

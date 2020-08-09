@@ -41,6 +41,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 customers: action.payload,
                 loading: false
             }
+        case OrderActionTypes.FETCH_TOTAL_REVENUE_SUCCESS:
+            return {
+                ...state,
+                totalRevenue: action.payload,
+                loading: false
+            }
         default:
             return state;
     }

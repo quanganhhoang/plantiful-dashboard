@@ -29,3 +29,8 @@ export const fetchAllCustomersSuccess = ( customers ) => ({
     payload: customers
 })
 
+export const fetchTotalRevenueSuccess = ( totalRevenue ) => ({
+    type: OrderActionTypes.FETCH_TOTAL_REVENUE_SUCCESS,
+    payload: totalRevenue
+})
+
