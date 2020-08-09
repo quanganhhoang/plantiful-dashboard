@@ -7,6 +7,7 @@ export const InventoryPageContainer = styled.div`
 `;
 
 export const UpdateInventoryButton = styled(CustomButton)`
-    margin: 5px;
+    margin: 0 10px 20px 10px;
+    width: 50%;
 `;
 

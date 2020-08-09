@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
-
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import {
     UpdateInventoryContainer,
     FormContainer,
     FormInfo,
     UploadContainer
-} from './update-inventory.styles'
+} from './update-inventory.styles';
 
 import { Button } from 'antd';
 
 import FormInput from '../../components/form-input/form-input.component';
 import FileUpload from '../../components/file-upload/file-upload.component';
 
-const UpdateInventory = () => {
+import { addProduct } from '../../redux/inventory/inventory.actions'
+
+const UpdateInventory = ( { addProduct }) => {
     const INITIAL_STATE = {
         plantName: '',
         light: '',
@@ -36,7 +38,16 @@ const UpdateInventory = () => {
 
     const handleSubmit = () => {
         setIsUploading(true);
-        console.log("SUBMIT")
+        const product = {
+            name: plantName,
+            light: light,
+            water: water,
+            humidity: humidity,
+            isToxicToPets: isToxicToPets,
+            other: other
+        }
+        addProduct(product);
+        setIsUploading(false);
     }
 
     const {
@@ -120,4 +131,10 @@ const UpdateInventory = () => {
     )
 }
 
-export default UpdateInventory;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProduct: (product) => dispatch(addProduct(product))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(UpdateInventory);

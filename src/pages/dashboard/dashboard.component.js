@@ -29,23 +29,6 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
         viewAllOrders();
     }, [viewAllOrders]);
 
-    const tableData = [
-        {
-            "Country Name": "Afghanistan",
-            Capital: "Kabul",
-            Currency: "Afghani"
-        },
-        {
-            "Country Name": "Albania",
-            Capital: "Tirane",
-            Currency: "Lek"
-        },
-        {
-            "Country Name": "Algeria",
-            Capital: "Algiers",
-            Currency: "Dinar"
-        }
-    ];
     const orderTable = [];
     incompleteOrders.forEach(order => {
         orderTable.push({
@@ -79,7 +62,7 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
 
                 <IncompleteOrderContainer>
                     Incomplete Orders: {incompleteOrders.length}
-                    {orderTable.length > 0 ? <DashboardTable data={orderTable} /> : ''}
+                    {orderTable.length > 0 ? <DashboardTable data={orderTable}/> : ''}
                 </IncompleteOrderContainer>
 
                 <CustomerLogisticsContainer>

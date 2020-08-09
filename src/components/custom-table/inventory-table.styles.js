@@ -63,7 +63,7 @@ const TableMarkup = ({ titles, data, exclude }) => {
 
     return (
         <StyledTable>
-            <caption>Plant Inventory</caption>
+            {/* <caption>Plant Inventory</caption> */}
             <colgroup>
                 <col />
                 <col />

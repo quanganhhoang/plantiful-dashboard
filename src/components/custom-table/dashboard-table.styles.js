@@ -68,7 +68,6 @@ const TableMarkup = ({ titles, data }) => {
 
     return (
         <StyledTable>
-            <caption>Plant Inventory</caption>
             <colgroup>
                 <col />
                 <col />
