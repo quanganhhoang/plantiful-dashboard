@@ -53,6 +53,7 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
             Email: order.email,
             "Phone Number": order.phoneNumber,
             "Created at": order.creationDate,
+            Total: order.total,
             "Cart Items": order.cartItems
         })
     })
