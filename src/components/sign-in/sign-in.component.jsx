@@ -57,7 +57,6 @@ const SignIn = ({ emailSignInStart }) => {
                 <ButtonsBarContainer>
                     <Button 
                         type='submit'
-                        type="primary"
                         size="large"
                         onClick={() => emailSignInStart(email, password)}
                     > 
