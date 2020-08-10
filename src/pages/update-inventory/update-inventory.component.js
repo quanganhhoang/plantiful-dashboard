@@ -31,11 +31,27 @@ const UpdateInventory = ( { productImages, previewImage }) => {
         isToxicToPets: '',
         other: '',
         plantPrice: '',
-        stemPrice: ''
+        plantQuantity: '',
+        stemPrice: '',
+        stemQuantity: ''
     }
 
     const [item, setItem] = useState(INITIAL_STATE);
     const [isUploading, setIsUploading] = useState(false);
+
+    const {
+        plantName,
+        isStemAvailable,
+        light,
+        water,
+        humidity,
+        isToxicToPets,
+        other,
+        plantPrice,
+        plantQuantity,
+        stemPrice,
+        stemQuantity
+    } = item;
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -61,7 +77,9 @@ const UpdateInventory = ( { productImages, previewImage }) => {
             other: other,
             image: imageUrls[0],
             plantPrice: plantPrice,
-            stemPrice: stemPrice
+            plantQuantity: plantQuantity,
+            stemPrice: stemPrice,
+            stemQuantity: stemQuantity
         }
         await addCollectionAndDocuments('plants', [product]);
 
@@ -95,18 +113,6 @@ const UpdateInventory = ( { productImages, previewImage }) => {
 
         return imageUrls;
     }
-
-    const {
-        plantName,
-        isStemAvailable,
-        light,
-        water,
-        humidity,
-        isToxicToPets,
-        other,
-        plantPrice,
-        stemPrice
-    } = item;
 
     return (
         <div>
@@ -170,6 +176,14 @@ const UpdateInventory = ( { productImages, previewImage }) => {
                                 label='Plant Price'
                                 required
                             />
+                            <FormInput
+                                name='plantQuantity'
+                                type='number'
+                                value={plantQuantity}
+                                handleChange={handleChange}
+                                label='Plant Quantity'
+                                required
+                            />
                             <p style={{ paddingBottom: 0, marginBottom: 0 }}>
                                 Are stems available for sale?
                             </p>
@@ -184,14 +198,24 @@ const UpdateInventory = ( { productImages, previewImage }) => {
                                 <Radio value={false}>No</Radio>
                             </Radio.Group>
                             {isStemAvailable ? 
-                                <FormInput
-                                    name='stemPrice'
-                                    type='number'
-                                    value={stemPrice}
-                                    handleChange={handleChange}
-                                    label='Stem Price'
-                                    required
-                                />
+                                <div>
+                                    <FormInput
+                                        name='stemPrice'
+                                        type='number'
+                                        value={stemPrice}
+                                        handleChange={handleChange}
+                                        label='Stem Price'
+                                        required
+                                    />
+                                    <FormInput
+                                        name='stemQuantity'
+                                        type='number'
+                                        value={stemQuantity}
+                                        handleChange={handleChange}
+                                        label='Stem Quantity'
+                                        required
+                                    />
+                                </div>
                                 : ''
                             }
                             <FileUpload isPreview title="Upload Preview Image"/>
