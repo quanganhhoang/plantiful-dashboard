@@ -22,7 +22,7 @@ export const Header = ({ currentUser, signOutStart }) => (
             <OptionLink to='/inventory'>Inventory</OptionLink>
                 {currentUser ? (
                     <OptionLink as='div' onClick={signOutStart}>
-                        SIGN OUT
+                        Sign out
                     </OptionLink>
                 ) : (
                     <OptionLink to='/'>Sign in</OptionLink>
