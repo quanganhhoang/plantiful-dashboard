@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 
 import FormInput from '../form-input/form-input.component';
@@ -10,21 +11,34 @@ import {
 import {
     SignInContainer,
     SignInTitle,
-    ButtonsBarContainer
+    ButtonsBarContainer,
+    ErrorMessage
 } from './sign-in.styles';
+
+import {
+    selectCurrentUser,
+    selectAuthErrorMessage
+} from '../../redux/user/user.selectors';
 
 import { Button } from 'antd';
 
-const SignIn = ({ emailSignInStart }) => {
+const SignIn = ({ emailSignInStart, currentUser, errorMessage }) => {
     const [userCredentials, setUserCredentials] = useState({
         email: '',
         password: ''
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(false);
+    }, [currentUser, errorMessage])
+
     const { email, password } = userCredentials;
 
     const handleSubmit = async event => {
         event.preventDefault();
+        setIsLoading(true);
         emailSignInStart(email, password);
     };
 
@@ -54,11 +68,14 @@ const SignIn = ({ emailSignInStart }) => {
                     label='password'
                     required
                 />
+                <input type="submit" style={{display: 'none'}}/>
+                <ErrorMessage>{errorMessage}</ErrorMessage>
                 <ButtonsBarContainer>
                     <Button 
-                        type='submit'
+                        type='primary'
                         size="large"
-                        onClick={() => emailSignInStart(email, password)}
+                        loading={isLoading}
+                        onClick={(e) => handleSubmit(e)}
                     > 
                         Sign In
                     </Button>
@@ -68,12 +85,17 @@ const SignIn = ({ emailSignInStart }) => {
     );
 };
 
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    errorMessage: selectAuthErrorMessage
+});
+
 const mapDispatchToProps = dispatch => ({
     emailSignInStart: (email, password) =>
         dispatch(emailSignInStart({ email, password }))
 });
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(SignIn);
