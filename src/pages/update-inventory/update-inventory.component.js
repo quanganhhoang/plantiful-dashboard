@@ -25,6 +25,7 @@ import { Radio, Button } from 'antd';
 const UpdateInventory = ( { productImages, previewImage }) => {
     const INITIAL_STATE = {
         plantName: '',
+        botanicalName: '',
         isStemAvailable: false,
         light: '',
         water: '',
@@ -42,6 +43,7 @@ const UpdateInventory = ( { productImages, previewImage }) => {
 
     const {
         plantName,
+        botanicalName,
         isStemAvailable,
         light,
         water,
@@ -70,6 +72,7 @@ const UpdateInventory = ( { productImages, previewImage }) => {
         await uploadImages(productImages, false);
         const product = {
             name: plantName,
+            botanicalName: botanicalName,
             isStemAvailable: isStemAvailable,
             light: light,
             water: water,
@@ -123,6 +126,14 @@ const UpdateInventory = ( { productImages, previewImage }) => {
                                 handleChange={handleChange}
                                 value={plantName}
                                 label='Plant Name'
+                                required
+                            />
+                            <FormInput
+                                name='botanicalName'
+                                type='string'
+                                handleChange={handleChange}
+                                value={botanicalName}
+                                label='Botanical Name'
                                 required
                             />
                             <FormInput
