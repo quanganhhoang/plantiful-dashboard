@@ -72,7 +72,14 @@ const UpdateInventory = ( { productImages, previewImage }) => {
         const storageRef = storage.ref();
         let imageUrls = [];
         await Promise.all(images.map(async image => {
-            const imageFolder = plantName.toLowerCase().split(' ').join('');
+            // only works for English names
+            // TODO(qahoang): fix this
+            const imageFolder = plantName
+                .replace(/[^\w\s]|_/g, "") // removes everything except alphanumeric characters
+                .replace(/\s+/g, " ") // removes whitespaces
+                .toLowerCase()
+                .split(' ')
+                .join('');
             const ref = isUploadingPreviewImage ?
                     `plant-preview-images/${image.name}` :
                     `plant-images/${imageFolder}/${image.name}`;
