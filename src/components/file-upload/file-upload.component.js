@@ -74,7 +74,7 @@ const FileUpload = ( { updateImagesToUpload } ) => {
             <Upload
                 // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType="picture-card"
-                accept=".png,.jpeg"
+                accept=".png,.jpeg,.jpg"
                 multiple
                 fileList={fileList}
                 onPreview={handlePreview}

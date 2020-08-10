@@ -22,7 +22,7 @@ import { storage, addCollectionAndDocuments } from '../../firebase/firebase.util
 import { Radio } from 'antd';
 
 
-const UpdateInventory = ( { productImages, addProduct }) => {
+const UpdateInventory = ( { productImages }) => {
     const INITIAL_STATE = {
         plantName: '',
         isStemAvailable: false,
@@ -74,7 +74,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
         images.forEach(async image => {
             const imageFolder = plantName.toLowerCase().split(' ').join('');
             const imageRef = storageRef.child(`plant-images/${imageFolder}/${image.name}`)
-            const imageFile = new File([image], image.name, {
+            const imageFile = new File([image.originFileObj], image.name, {
                 type: image.type
             });
             
