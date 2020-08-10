@@ -14,4 +14,9 @@ export const updateImagesToUpload = (fileList) => ({
     payload: fileList
 })
 
+export const updatePreviewImage = (image) => ({
+    type: InventoryActionTypes.UPDATE_PREVIEW_IMAGE,
+    payload: image
+})
+
 

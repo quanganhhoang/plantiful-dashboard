@@ -7,22 +7,21 @@ import {
     UploadContainer
 } from './update-inventory.styles';
 
-import { Button } from 'antd';
-
 import FormInput from '../../components/form-input/form-input.component';
 import FileUpload from '../../components/file-upload/file-upload.component';
 
 import { addProduct } from '../../redux/inventory/inventory.actions'
 import {
-    selectProductImages
+    selectProductImages,
+    selectPreviewImage
 } from '../../redux/inventory/inventory.selectors';
 
 import { storage, addCollectionAndDocuments } from '../../firebase/firebase.utils';
 
-import { Radio } from 'antd';
+import { Radio, Button } from 'antd';
 
 
-const UpdateInventory = ( { productImages }) => {
+const UpdateInventory = ( { productImages, previewImage }) => {
     const INITIAL_STATE = {
         plantName: '',
         isStemAvailable: false,
@@ -31,7 +30,6 @@ const UpdateInventory = ( { productImages }) => {
         humidity: '',
         isToxicToPets: '',
         other: '',
-        image: '',
         plantPrice: '',
         stemPrice: ''
     }
@@ -50,6 +48,9 @@ const UpdateInventory = ( { productImages }) => {
 
     const handleSubmit = async () => {
         setIsUploading(true);
+        
+        const imageUrls = await uploadImages([previewImage], true);
+        await uploadImages(productImages, false);
         const product = {
             name: plantName,
             isStemAvailable: isStemAvailable,
@@ -58,28 +59,34 @@ const UpdateInventory = ( { productImages }) => {
             humidity: humidity,
             isToxicToPets: isToxicToPets,
             other: other,
-            image: image,
+            image: imageUrls[0],
             plantPrice: plantPrice,
             stemPrice: stemPrice
         }
-
-        
-        await uploadImages(productImages);
         await addCollectionAndDocuments('plants', [product]);
+
         setIsUploading(false);
     }
 
-    const uploadImages = async (images) => {
+    const uploadImages = async (images, isUploadingPreviewImage) => {
         const storageRef = storage.ref();
-        images.forEach(async image => {
+        let imageUrls = [];
+        await Promise.all(images.map(async image => {
             const imageFolder = plantName.toLowerCase().split(' ').join('');
-            const imageRef = storageRef.child(`plant-images/${imageFolder}/${image.name}`)
+            const ref = isUploadingPreviewImage ?
+                    `plant-preview-images/${image.name}` :
+                    `plant-images/${imageFolder}/${image.name}`;
+            const imageRef = storageRef.child(ref);
             const imageFile = new File([image.originFileObj], image.name, {
                 type: image.type
             });
             
             const snapshot = await imageRef.put(imageFile);
-        })
+            const imageUrl = await snapshot.ref.getDownloadURL();
+            imageUrls.push(imageUrl);
+        }));
+
+        return imageUrls;
     }
 
     const {
@@ -90,7 +97,6 @@ const UpdateInventory = ( { productImages }) => {
         humidity,
         isToxicToPets,
         other,
-        image,
         plantPrice,
         stemPrice
     } = item;
@@ -150,14 +156,6 @@ const UpdateInventory = ( { productImages }) => {
                                 required
                             />
                             <FormInput
-                                name='image'
-                                type='url'
-                                value={image}
-                                handleChange={handleChange}
-                                label='Image'
-                                required
-                            />
-                            <FormInput
                                 name='plantPrice'
                                 type='number'
                                 value={plantPrice}
@@ -189,10 +187,11 @@ const UpdateInventory = ( { productImages }) => {
                                 />
                                 : ''
                             }
+                            <FileUpload isPreview title="Upload Preview Image"/>
                         </form>
                     </FormInfo>
                     <UploadContainer>
-                        <FileUpload />
+                        <FileUpload isPreview={false} title="Upload Additional Images"/>
                     </UploadContainer>
                 </FormContainer>
                 <Button
@@ -210,7 +209,8 @@ const UpdateInventory = ( { productImages }) => {
 
 const mapStateToProps = (state) => {
     return {
-        productImages: selectProductImages(state)
+        productImages: selectProductImages(state),
+        previewImage: selectPreviewImage(state)
     }
 }
 

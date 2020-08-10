@@ -8,7 +8,8 @@ import {
 } from './file-upload.styles';
 
 import {
-    updateImagesToUpload
+    updateImagesToUpload,
+    updatePreviewImage
 } from '../../redux/inventory/inventory.actions';
 
 
@@ -21,7 +22,7 @@ const getBase64 = (file) => {
     });
 }
 
-const FileUpload = ( { updateImagesToUpload } ) => {
+const FileUpload = ( { updateImagesToUpload, updatePreviewImage, title, isPreview } ) => {
     const INITIAL_STATE = {
         previewVisible: false,
         previewImage: '',
@@ -56,8 +57,12 @@ const FileUpload = ( { updateImagesToUpload } ) => {
             ...preview,
             fileList
         });
-
-        updateImagesToUpload(fileList);
+        
+        if (isPreview) {
+            updatePreviewImage(fileList[0]);
+        } else {
+            updateImagesToUpload(fileList);
+        }
     }
 
     const { previewVisible, previewImage, fileList, previewTitle } = preview;
@@ -70,7 +75,7 @@ const FileUpload = ( { updateImagesToUpload } ) => {
         
     return (
         <div>
-            <UploadTitle>Upload Plant Images</UploadTitle>
+            <UploadTitle>{title}</UploadTitle>
             <Upload
                 // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType="picture-card"
@@ -97,7 +102,8 @@ const FileUpload = ( { updateImagesToUpload } ) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateImagesToUpload: (fileList) => dispatch(updateImagesToUpload(fileList))
+        updateImagesToUpload: (fileList) => dispatch(updateImagesToUpload(fileList)),
+        updatePreviewImage: (image) => dispatch(updatePreviewImage(image))
     }
 }
 

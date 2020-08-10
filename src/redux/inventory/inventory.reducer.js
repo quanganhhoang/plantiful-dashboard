@@ -2,7 +2,8 @@ import InventoryActionTypes from './inventory.types';
 
 const INITIAL_STATE = {
     productToAdd: null,
-    productImages: []
+    productImages: [],
+    previewImage: null
 };
 
 const inventoryReducer = (state = INITIAL_STATE, action) => {
@@ -21,6 +22,11 @@ const inventoryReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 productImages: action.payload
+            };
+        case InventoryActionTypes.UPDATE_PREVIEW_IMAGE:
+            return {
+                ...state,
+                previewImage: action.payload
             };
         default:
             return state;

@@ -11,3 +11,8 @@ export const selectProductImages = createSelector(
     [selectInventory],
     inventory => inventory.productImages
 );
+
+export const selectPreviewImage = createSelector(
+    [selectInventory],
+    inventory => inventory.previewImage
+);
