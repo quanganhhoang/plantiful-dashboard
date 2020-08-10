@@ -17,17 +17,23 @@ import {
     selectProductImages
 } from '../../redux/inventory/inventory.selectors';
 
-import { storage } from '../../firebase/firebase.utils';
+import { storage, addCollectionAndDocuments } from '../../firebase/firebase.utils';
+
+import { Radio } from 'antd';
 
 
 const UpdateInventory = ( { productImages, addProduct }) => {
     const INITIAL_STATE = {
         plantName: '',
+        isStemAvailable: false,
         light: '',
         water: '',
         humidity: '',
         isToxicToPets: '',
-        other: ''
+        other: '',
+        image: '',
+        plantPrice: '',
+        stemPrice: ''
     }
 
     const [item, setItem] = useState(INITIAL_STATE);
@@ -42,24 +48,30 @@ const UpdateInventory = ( { productImages, addProduct }) => {
         });
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setIsUploading(true);
         const product = {
             name: plantName,
+            isStemAvailable: isStemAvailable,
             light: light,
             water: water,
             humidity: humidity,
             isToxicToPets: isToxicToPets,
-            other: other
+            other: other,
+            image: image,
+            plantPrice: plantPrice,
+            stemPrice: stemPrice
         }
-        uploadImages(productImages);
+
+        
+        await uploadImages(productImages);
+        await addCollectionAndDocuments('plants', [product]);
         setIsUploading(false);
     }
 
     const uploadImages = async (images) => {
         const storageRef = storage.ref();
         images.forEach(async image => {
-            console.log("image", image);
             const imageFolder = plantName.toLowerCase().split(' ').join('');
             const imageRef = storageRef.child(`plant-images/${imageFolder}/${image.name}`)
             const imageFile = new File([image], image.name, {
@@ -67,17 +79,20 @@ const UpdateInventory = ( { productImages, addProduct }) => {
             });
             
             const snapshot = await imageRef.put(imageFile);
-            console.log("snapshot", snapshot);
         })
     }
 
     const {
         plantName,
+        isStemAvailable,
         light,
         water,
         humidity,
         isToxicToPets,
-        other
+        other,
+        image,
+        plantPrice,
+        stemPrice
     } = item;
 
     return (
@@ -88,7 +103,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                         <form onSubmit={handleSubmit}>
                             <FormInput
                                 name='plantName'
-                                type='plantName'
+                                type='string'
                                 handleChange={handleChange}
                                 value={plantName}
                                 label='Plant Name'
@@ -96,7 +111,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                             />
                             <FormInput
                                 name='light'
-                                type='light'
+                                type='string'
                                 value={light}
                                 handleChange={handleChange}
                                 label='Light'
@@ -104,7 +119,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                             />
                             <FormInput
                                 name='water'
-                                type='water'
+                                type='string'
                                 value={water}
                                 handleChange={handleChange}
                                 label='Water'
@@ -112,7 +127,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                             />
                             <FormInput
                                 name='humidity'
-                                type='humidity'
+                                type='string'
                                 value={humidity}
                                 handleChange={handleChange}
                                 label='Humidity'
@@ -120,7 +135,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                             />
                             <FormInput
                                 name='isToxicToPets'
-                                type='isToxicToPets'
+                                type='string'
                                 value={isToxicToPets}
                                 handleChange={handleChange}
                                 label='Is it toxic to pets'
@@ -128,12 +143,52 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                             />
                             <FormInput
                                 name='other'
-                                type='other'
+                                type='string'
                                 value={other}
                                 handleChange={handleChange}
                                 label='Other'
                                 required
                             />
+                            <FormInput
+                                name='image'
+                                type='url'
+                                value={image}
+                                handleChange={handleChange}
+                                label='Image'
+                                required
+                            />
+                            <FormInput
+                                name='plantPrice'
+                                type='number'
+                                value={plantPrice}
+                                handleChange={handleChange}
+                                label='Plant Price'
+                                required
+                            />
+                            <p style={{ paddingBottom: 0, marginBottom: 0 }}>
+                                Are stems available for sale?
+                            </p>
+                            <Radio.Group 
+                                onChange={handleChange}
+                                defaultValue={false}
+                                size="large"
+                                style={{ marginBottom: '20px' }}
+                                name="isStemAvailable"
+                            >
+                                <Radio value={true}>Yes</Radio>
+                                <Radio value={false}>No</Radio>
+                            </Radio.Group>
+                            {isStemAvailable ? 
+                                <FormInput
+                                    name='stemPrice'
+                                    type='number'
+                                    value={stemPrice}
+                                    handleChange={handleChange}
+                                    label='Stem Price'
+                                    required
+                                />
+                                : ''
+                            }
                         </form>
                     </FormInfo>
                     <UploadContainer>
@@ -144,6 +199,7 @@ const UpdateInventory = ( { productImages, addProduct }) => {
                     type="primary"
                     onClick={handleSubmit}
                     loading={isUploading}
+                    style={{ marginBottom: '50px' }}
                 >
                     {isUploading ? 'Uploading' : 'Start Upload'}
                 </Button>
