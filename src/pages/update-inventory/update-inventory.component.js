@@ -17,6 +17,7 @@ import {
 } from '../../redux/inventory/inventory.selectors';
 
 import { storage, addCollectionAndDocuments } from '../../firebase/firebase.utils';
+import { convertPlantNameToImageDir } from '../../util/utils';
 
 import { Radio, Button } from 'antd';
 
@@ -92,15 +93,11 @@ const UpdateInventory = ( { productImages, previewImage }) => {
         await Promise.all(images.map(async image => {
             // only works for English names
             // TODO(qahoang): fix this
-            const imageFolder = plantName
-                .replace(/[^\w\s]|_/g, "") // removes everything except alphanumeric characters
-                .replace(/\s+/g, " ") // removes whitespaces
-                .toLowerCase()
-                .split(' ')
-                .join('');
+            const imageDir = convertPlantNameToImageDir(plantName);
+                
             const ref = isUploadingPreviewImage ?
                     `plant-preview-images/${image.name}` :
-                    `plant-images/${imageFolder}/${image.name}`;
+                    `plant-images/${imageDir}/${image.name}`;
             const imageRef = storageRef.child(ref);
             const imageFile = new File([image.originFileObj], image.name, {
                 type: image.type
