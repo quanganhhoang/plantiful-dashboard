@@ -33,6 +33,7 @@ const UpdateInventory = ( { productImages, previewImage }) => {
         isToxicToPets: '',
         other: '',
         plantPrice: '',
+        potSize: '',
         plantQuantity: '',
         stemPrice: '',
         stemQuantity: ''
@@ -51,6 +52,7 @@ const UpdateInventory = ( { productImages, previewImage }) => {
         isToxicToPets,
         other,
         plantPrice,
+        potSize,
         plantQuantity,
         stemPrice,
         stemQuantity
@@ -81,6 +83,7 @@ const UpdateInventory = ( { productImages, previewImage }) => {
             other: other,
             image: imageUrls[0],
             plantPrice: plantPrice,
+            potSize: potSize,
             plantQuantity: plantQuantity,
             stemPrice: stemPrice,
             stemQuantity: stemQuantity
@@ -182,6 +185,14 @@ const UpdateInventory = ( { productImages, previewImage }) => {
                                 value={plantPrice}
                                 handleChange={handleChange}
                                 label='Plant Price'
+                                required
+                            />
+                            <FormInput
+                                name='potSize'
+                                type='string'
+                                value={potSize}
+                                handleChange={handleChange}
+                                label='Pot Size'
                                 required
                             />
                             <FormInput
