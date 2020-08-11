@@ -20,7 +20,6 @@ export function* fetchLogistics() {
         const allOrders = yield viewAllOrders();
         allOrders.sort((a, b) => new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime());
         const completedOrders = allOrders.filter(order => order.isCompleted);
-        console.log("COMPLETE", completedOrders);
         const inCompletedOrders = allOrders.filter(order => !order.isCompleted);
 
         let customers = [], totalRevenue = 0;

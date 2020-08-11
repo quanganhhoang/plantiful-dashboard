@@ -18,6 +18,7 @@ import { checkUserSession } from './redux/user/user.actions';
 const HomePage = lazy(() => import('./pages/homepage/homepage.component'));
 const DashboardPage = lazy(() => import('./pages/dashboard/dashboard.component'));
 const InventoryPage = lazy(() => import('./pages/inventory/inventory.component'));
+
 const UpdateInventoryPage = lazy(() => import('./pages/update-inventory/update-inventory.component'));
 
 
@@ -25,7 +26,7 @@ const App = ( { checkUserSession, currentUser } ) => {
     useEffect(() => {
         checkUserSession();
     }, [checkUserSession]);
-
+    console.log("CURRENT", currentUser);
     return (
         <div>
             <GlobalStyle />
@@ -34,31 +35,31 @@ const App = ( { checkUserSession, currentUser } ) => {
                 <ErrorBoundary>
                     <Suspense fallback={<Spinner />}>
                         <Route 
-                            exact 
+                            exact
                             path='/' 
                             render={() =>
-                                !currentUser ? <HomePage /> : <DashboardPage />
+                                currentUser ? <Redirect to='/dashboard' /> : <HomePage />
                             }
                         />
                         <Route 
                             exact
                             path='/dashboard'
                             render={() =>
-                                !currentUser ? <Redirect to='/' /> : <DashboardPage />
+                                currentUser ? <DashboardPage /> : <Redirect to='/' />
                             }
                         />
                         <Route 
                             exact 
                             path='/inventory' 
                             render={() =>
-                                !currentUser ? <Redirect to='/' /> : <InventoryPage />
+                                currentUser ? <InventoryPage /> : <Redirect to='/' />
                             }
                         />
                         <Route 
                             exact 
                             path='/inventory/update' 
                             render={() =>
-                                !currentUser ? <Redirect to='/' /> : <UpdateInventoryPage />
+                                currentUser ? <UpdateInventoryPage /> : <Redirect to='/' />
                             }
                         />
                     </Suspense>

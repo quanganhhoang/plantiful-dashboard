@@ -9,7 +9,7 @@ import inventoryReducer from './inventory/inventory.reducer';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['']
+    whitelist: ['user']
 };
 
 const rootReducer = combineReducers({
