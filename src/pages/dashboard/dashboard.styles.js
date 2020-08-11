@@ -6,25 +6,37 @@ export const DashboardContainer = styled.div`
 `;
 
 export const TotalNumberOrderContainer = styled.div`
-    display: grid;
+    display: flex;
+    margin: 5px;
+    font-weight: bold;
 `;
 
 export const CompleteOrderContainer = styled.div`
-    display: grid;
+    display: flex;
+    margin: 5px;
+    font-weight: bold;
 `;
 
 export const IncompleteOrderContainer = styled.div`
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
 `;
 
 export const GrossRevenueContainer = styled.div`
-    display: grid;
+    display: flex;
+    margin: 5px;
+    font-weight: bold;
 `;
 
 export const CustomerLogisticsContainer = styled.div`
-    display: grid;
+    display: flex;
+    margin: 5px;
+    font-weight: bold;
 `;
 
 export const TotalRevenueContainer = styled.div`
-    display: grid;
+    display: flex;
+    margin: 5px;
+    font-weight: bold;
 `;

@@ -109,10 +109,10 @@ export const addOrderRequest = async (userCredentials, cartItems, total) => {
 };
 
 export const viewAllOrders = async () => {
-    const collectionRef = firestore.collection('requests');
+    const collectionRef = firestore.collection('orders');
     let orders = [];
     try {
-        const snapshot = await collectionRef.where('isCompleted', '==', false).get();
+        const snapshot = await collectionRef.get();
         if (snapshot.empty) {
             return;
         }
@@ -130,22 +130,23 @@ export const viewAllOrders = async () => {
     return orders;
 }
 
-export const viewCompletedOrders = async () => {
-    const collectionRef = firestore.collection('requests')
-
+export const completeOrder = async (docId) => {
+    const collectionRef = firestore.collection('orders');
     try {
-        const snapshot = await collectionRef.where('isCompleted', '==', false).get();
-        console.log('Complete orders:', snapshot);
-        if (snapshot.empty) {
-            console.log('All requests are completed');
-            return;
-        }
-    
-        snapshot.forEach(doc => {
-            console.log(doc.id, ' => ', doc.data())
-        })
+        collectionRef.doc(docId).update({
+            isCompleted: true
+        });
     } catch (err) {
-        console.log(err);
+        console.log("Failed to complete order with id " + docId, err);
+    }
+}
+
+export const cancelOrder = async (docId) => {
+    const collectionRef = firestore.collection('orders');
+    try {
+        collectionRef.doc(docId).delete();
+    } catch (err) {
+        console.log("Failed to delete order with id " + docId, err);
     }
 }
 

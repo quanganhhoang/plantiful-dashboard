@@ -47,6 +47,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 totalRevenue: action.payload,
                 loading: false
             }
+        case OrderActionTypes.COMPLETE_ORDER:
+            return {
+                ...state
+            }
+        case OrderActionTypes.CANCEL_ORDER:
+            return {
+                ...state
+            }
         default:
             return state;
     }

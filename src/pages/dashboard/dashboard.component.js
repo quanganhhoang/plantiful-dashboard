@@ -24,10 +24,10 @@ import {
 
 import DashboardTable from '../../components/custom-table/dashboard-table.styles';
 
-const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrders, numCustomers, totalRevenue, totalSales }) => {
+const Dashboard = React.memo(( { fetchLogistics, orderData, completedOrders, incompleteOrders, numCustomers, totalRevenue }, nextProps) => {
     useEffect(() => {
-        viewAllOrders();
-    }, [viewAllOrders]);
+        fetchLogistics();
+    }, [fetchLogistics]);
 
     const orderTable = [];
     incompleteOrders.forEach(order => {
@@ -41,14 +41,6 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
             "Cart Items": order.cartItems
         })
     })
-    console.log("ORDER TABLE: ", orderTable);
-    console.log("ALL ORDERS:", orderData)
-    console.log("COMPLETE ORDERS:", completedOrders);
-    console.log("INCOMPLETE ORDERS:", incompleteOrders);
-    console.log("NUM CUSTOMERS:", numCustomers);
-    console.log("TOTAL REVENUE:", totalRevenue);
-    console.log("TOTAL SALES:", totalSales);
-
 
     return (
         <div>
@@ -58,11 +50,11 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
                 </TotalNumberOrderContainer>
 
                 <CompleteOrderContainer>
-                    Complete Orders: {completedOrders.length}
+                    Complete orders: {completedOrders.length}
                 </CompleteOrderContainer>
 
                 <IncompleteOrderContainer>
-                    Incomplete Orders: {incompleteOrders.length}
+                    Incomplete orders: {incompleteOrders.length}
                     {orderTable.length > 0 ? <DashboardTable data={orderTable}/> : ''}
                 </IncompleteOrderContainer>
 
@@ -71,12 +63,12 @@ const Dashboard = ( { viewAllOrders, orderData, completedOrders, incompleteOrder
                 </CustomerLogisticsContainer>
 
                 <TotalRevenueContainer>
-                    Total Revenue: {totalRevenue}
+                    Total revenue: {totalRevenue}
                 </TotalRevenueContainer>
             </DashboardContainer>
         </div>
     )
-}
+})
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -91,7 +83,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        viewAllOrders: () => dispatch(fetchLogistics())
+        fetchLogistics: () => dispatch(fetchLogistics())
     }
 }
 

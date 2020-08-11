@@ -3,7 +3,13 @@ import styled from "styled-components";
 import { Button, Modal } from 'antd';
 import OrderTable from './inventory-table.styles';
 
+import {
+    completeOrder,
+    cancelOrder
+} from '../../firebase/firebase.utils';
+
 const StyledTable = styled.table`
+    margin: 10px;
     caption-side: top;
     border: none;
     border-collapse: collapse;
@@ -51,7 +57,7 @@ const StyledTable = styled.table`
     }
 `;
 
-const TableMarkup = ({ titles, data }) => {
+const TableMarkup = ( { titles, data } ) => {
     const modalVisibility = {};
     Object.keys(data).forEach(k => {
         modalVisibility[k] = false;
@@ -80,6 +86,15 @@ const TableMarkup = ({ titles, data }) => {
         })
     };
 
+    const handleCompleteOrder = (orderId) => {
+        completeOrder(orderId);
+    }
+
+    const handleCancelOrder = (orderId) => {
+        cancelOrder(orderId);
+    }
+
+    const excludeColumns = "botanicalName, image, humidity, light, plantQuantity, stemQuantity, isToxicToPets, plantPrice, stemPrice, water, isStemAvailable, other";
     return (
         <StyledTable>
             <colgroup>
@@ -110,7 +125,7 @@ const TableMarkup = ({ titles, data }) => {
                                     title="Order Information"
                                     width="600"
                                     visible={visible[index]}
-                                    okText="Complete"
+                                    okText="Complete order"
                                     onOk={() => handleOk(index)}
                                     onCancel={() => handleCancel(index)}
                                     closeable
@@ -122,7 +137,7 @@ const TableMarkup = ({ titles, data }) => {
                                     {item["Cart Items"].length > 0 ? 
                                         <OrderTable
                                             data={item["Cart Items"]}
-                                            excludeColumns="imageUrl"    
+                                            excludeColumns={excludeColumns}
                                         /> 
                                         : 
                                         ''
@@ -131,11 +146,16 @@ const TableMarkup = ({ titles, data }) => {
                             </td>
                             <td>
                                 <Button
-                                    onClick={() => {
-                                        console.log(index);
-                                    }}
+                                    onClick={() => handleCompleteOrder(item["Order ID"])}
                                 >
                                     Complete
+                                </Button>
+                            </td>
+                            <td>
+                                <Button
+                                    onClick={() => handleCancelOrder(item["Order ID"])}
+                                >
+                                    Cancel
                                 </Button>
                             </td>
                         </tr>

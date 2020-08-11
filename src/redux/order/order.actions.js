@@ -34,3 +34,13 @@ export const fetchTotalRevenueSuccess = ( totalRevenue ) => ({
     payload: totalRevenue
 })
 
+export const completeOrder = (orderId) => ({
+    type: OrderActionTypes.COMPLETE_ORDER,
+    payload: orderId
+})
+
+export const cancelOrder = (orderId) => ({
+    type: OrderActionTypes.CANCEL_ORDER,
+    payload: orderId
+})
+

@@ -20,12 +20,13 @@ export function* fetchLogistics() {
         const allOrders = yield viewAllOrders();
         allOrders.sort((a, b) => new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime());
         const completedOrders = allOrders.filter(order => order.isCompleted);
+        console.log("COMPLETE", completedOrders);
         const inCompletedOrders = allOrders.filter(order => !order.isCompleted);
 
         let customers = [], totalRevenue = 0;
         allOrders.forEach((order) => {
-            // calc total revnue
-            totalRevenue += order.total;
+            // calc total revenue
+            if (order.isCompleted) totalRevenue += order.total;
             // find total number of unique customers
             const index = customers.findIndex(x => x.name === order.name);
             if (index <= -1) {
@@ -54,8 +55,16 @@ export function* onFetchLogistics() {
     );
 }
 
+export function* onUpdateOrder() {
+    yield takeLatest(
+        [OrderActionTypes.COMPLETE_ORDER, OrderActionTypes.CANCEL_ORDER],
+        fetchLogistics
+    )
+}
+
 export default function* orderSagas() {
     yield all([
         call(onFetchLogistics),
+        call(onUpdateOrder)
     ]);
 }
