@@ -70,8 +70,8 @@ const UpdateInventory = ( { productImages, previewImage }) => {
     const handleSubmit = async () => {
         setIsUploading(true);
         
-        const imageUrls = await uploadImages([previewImage], true);
-        await uploadImages(productImages, false);
+        const previewImageUrl = await uploadImages([previewImage], true);
+        const imageUrls = await uploadImages(productImages, false);
         const product = {
             name: plantName,
             botanicalName: botanicalName,
@@ -81,7 +81,8 @@ const UpdateInventory = ( { productImages, previewImage }) => {
             humidity: humidity,
             isToxicToPets: isToxicToPets,
             other: other,
-            image: imageUrls[0],
+            previewImageUrl: previewImageUrl[0],
+            imageUrls: imageUrls,
             plantPrice: plantPrice,
             potSize: potSize,
             plantQuantity: plantQuantity,
