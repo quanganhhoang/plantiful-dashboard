@@ -87,7 +87,8 @@ const UpdateInventory = ( { productImages, previewImage }) => {
             potSize: potSize,
             plantQuantity: plantQuantity,
             stemPrice: stemPrice,
-            stemQuantity: stemQuantity
+            stemQuantity: stemQuantity,
+            lastModified: new Date().toLocaleString()
         }
         await addCollectionAndDocuments('plants', [product]);
 
