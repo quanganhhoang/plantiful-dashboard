@@ -50,6 +50,16 @@ const StyledTable = styled.table`
     }
 `;
 
+const ImageContainer = styled.div`
+    width: 100%;
+    padding: 10px;
+
+    img {
+        width: 20%;
+        height: 20%;
+    }
+`;
+
 const titleOrder = {
     "id": 0,
     "name": 1,
@@ -79,9 +89,11 @@ const TableMarkup = ({ titles, data, exclude }) => {
             <tbody>
                 {data.map((item, index) => (
                 <tr key={index}>
-                    {displayTitles.map((title, index) => (
-                        <td key={index}>{item[title]}</td>
-                    ))}
+                    {displayTitles.map((title, index) => {
+                        if(title != "previewImageUrl")
+                            return <td key={index}>{item[title]}</td>
+                        return <ImageContainer> <img key={index} src={item[title]} text='item' /></ImageContainer>
+                    })}
                 </tr>
                 ))}
             </tbody>

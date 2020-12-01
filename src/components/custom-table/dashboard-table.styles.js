@@ -94,7 +94,7 @@ const TableMarkup = ( { titles, data } ) => {
         cancelOrder(orderId);
     }
 
-    const excludeColumns = "botanicalName, image, humidity, light, plantQuantity, stemQuantity, isToxicToPets, plantPrice, stemPrice, water, isStemAvailable, other";
+    const excludeColumns = "botanicalName, image, imageUrls, humidity, light, plantQuantity, stemQuantity, isToxicToPets, plantPrice, stemPrice, water, isStemAvailable, other";
     return (
         <StyledTable>
             <colgroup>
